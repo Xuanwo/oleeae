@@ -1,0 +1,6 @@
+[package]
+name = "oleeae"
+version = "0.1.0"
+authors = ["Xuanwo <xuanwo@archlinuxcn.org>"]
+
+[dependencies]
