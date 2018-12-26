@@ -6,9 +6,11 @@ extern crate rocket;
 extern crate rocket_contrib;
 #[macro_use]
 extern crate serde_derive;
+extern crate uuid;
 
 mod route;
 mod types;
+mod utils;
 
 use route::*;
 
