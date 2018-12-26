@@ -1,6 +1,5 @@
-use rocket::fairing::{AdHoc, Fairing, Info, Kind};
-use rocket::http::{ContentType, Header, Method, Status};
-use rocket::{Data, Request, Response, State};
+use rocket::fairing::{Fairing, Info, Kind};
+use rocket::{Data, Request, Response};
 use uuid::Uuid;
 
 pub struct RequestIdMiddleware;
