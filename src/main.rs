@@ -1,3 +1,19 @@
+#![feature(proc_macro_hygiene, decl_macro)]
+
+#[macro_use]
+extern crate rocket;
+#[macro_use]
+extern crate rocket_contrib;
+#[macro_use]
+extern crate serde_derive;
+
+mod route;
+mod types;
+
+use route::*;
+
 fn main() {
-    println!("Hello, world!");
+    rocket::ignite()
+        .mount("/", routes![get_packages, get_maintainers, get_builds])
+        .launch();
 }
