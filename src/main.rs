@@ -17,5 +17,6 @@ use route::*;
 fn main() {
     rocket::ignite()
         .mount("/", routes![get_packages, get_maintainers, get_builds])
+        .attach(utils::RequestIdMiddleware)
         .launch();
 }

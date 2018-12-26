@@ -1,19 +1,28 @@
-use rocket::request::{self, Request, FromRequest, State};
-use rocket::outcome::Outcome::*;
+use rocket::fairing::{AdHoc, Fairing, Info, Kind};
+use rocket::http::{ContentType, Header, Method, Status};
+use rocket::{Data, Request, Response, State};
 use uuid::Uuid;
 
-/// A type that represents a request's ID.
-pub struct RequestId(pub String);
+pub struct RequestIdMiddleware;
 
-/// Returns the current request's ID, assigning one only as necessary.
-impl<'a, 'r> FromRequest<'a, 'r> for RequestId {
-    type Error = ();
+#[derive(Default, Clone)]
+pub struct RequestId(Option<String>);
 
-    fn from_request(request: &'a Request<'r>) -> request::Outcome<Self, ()> {
-        let id = format!("{}", Uuid::new_v4().to_simple().to_string());
+impl Fairing for RequestIdMiddleware {
+    fn info(&self) -> Info {
+        Info {
+            name: "Request ID",
+            kind: Kind::Request | Kind::Response,
+        }
+    }
 
-        request.local_cache(|| RequestId(id.clone()));
+    fn on_request(&self, request: &mut Request, _: &Data) {
+        request
+            .local_cache(|| RequestId(Some(format!("{}", Uuid::new_v4().to_simple().to_string()))));
+    }
 
-        Success(RequestId(id))
+    fn on_response(&self, request: &Request, response: &mut Response) {
+        let id = request.local_cache(|| RequestId(None)).clone();
+        response.set_raw_header("x-oleeae-request-id", id.0.unwrap());
     }
 }

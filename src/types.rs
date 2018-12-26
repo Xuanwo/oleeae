@@ -7,7 +7,6 @@ pub struct Package {
     pub pkgrel: i32,
 
     // TODO: Add depend and provide to support static check before makepkg.
-
     pub status: String,
     pub succeed_times: i32,
     pub failed_times: i32,

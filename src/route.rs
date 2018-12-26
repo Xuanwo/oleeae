@@ -2,7 +2,6 @@ use rocket::request::Form;
 use rocket_contrib::json::JsonValue;
 
 use std::format;
-use utils::RequestId;
 
 #[derive(Clone, Debug, Serialize, Deserialize, FromForm)]
 pub struct GetPackagesRequest {
@@ -18,8 +17,7 @@ pub struct GetPackagesRequest {
 }
 
 #[get("/packages?<req..>")]
-pub fn get_packages(request_id: RequestId, req: Option<Form<GetPackagesRequest>>) -> JsonValue {
-    println!("{:?}", request_id.0);
+pub fn get_packages(req: Option<Form<GetPackagesRequest>>) -> JsonValue {
     json!(format!("{:?}", req))
 }
 
